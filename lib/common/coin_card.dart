@@ -1,30 +1,30 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:crypto_tracker/common/toast.dart';
-import 'package:crypto_tracker/pages/home.dart';
+import 'package:crypto_tracker/functions/hasbeen_added.dart';
 import 'package:crypto_tracker/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../functions/add_to_watchlist.dart';
+import '../functions/remove_from_watchlist.dart';
+
 class CoinCard extends StatefulWidget {
-  const CoinCard({ Key? key, this.coinData, this.index, this.removeFromWatchlist, this.addToWatchlist, this.hasbeenAdded }) : super(key: key);
+  const CoinCard({ Key? key, this.coinData, this.index,}) : super(key: key);
   final coinData;
   final index;
-  final removeFromWatchlist;
-  final addToWatchlist;
-  final hasbeenAdded;
   @override
   _CoinCardState createState() => _CoinCardState();
   
 }
 
 class _CoinCardState extends State<CoinCard> {
-  var home = HomePage().check();
   bool isAdded = false;
   var formatter = NumberFormat('#,###,000');
   @override
   Widget build(BuildContext context) {
-    widget.hasbeenAdded(widget.coinData[widget.index]['id']).then((value){
+    hasbeenAdded(widget.coinData[widget.index]['id']).then((value){
+      // print(widget.coinData[widget.index]['id'] + ' ' +value);
       if(mounted){
         setState(() {
           isAdded = value;
@@ -98,16 +98,16 @@ class _CoinCardState extends State<CoinCard> {
                                 onTap: () {
                                   final toast;
                                   if(isAdded){
-                                    widget.removeFromWatchlist(widget.coinData[widget.index]['id']);
+                                    removeFromWatchlist(widget.coinData[widget.index]['id']);
                                     toast = Toast(
                                               message:'${widget.coinData[widget.index]['name']} is remove from watchlist',
                                               duration: 3,
                                             ).ToastBar();
                                   }
                                   else{
-                                    widget.addToWatchlist(widget.coinData[widget.index]['id']);
+                                    addToWatchlist(widget.coinData[widget.index]['id']);
                                     toast = Toast(
-                                              message:'${widget.coinData[widget.index]['name']} is adde in watchlist',
+                                              message:'${widget.coinData[widget.index]['name']} is added in watchlist',
                                               duration: 3,
                                             ).ToastBar();
                                   }

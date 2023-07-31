@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import '../functions/getcurrent_user.dart';
+
 class Home extends StatelessWidget {
 const Home({ Key? key }) : super(key: key);
 
@@ -33,17 +35,7 @@ const Home({ Key? key }) : super(key: key);
                 backgroundColor: Theme.of(context).colorScheme.background,
                 foregroundColor: Theme.of(context).colorScheme.onBackground,
                 centerTitle: true,
-                actions:[
-                  PopupMenuButton(
-                    itemBuilder: (context){
-                      return [
-                        PopupMenuItem(
-                          value: 0,
-                          child: Text('Action 1')
-                        )
-                      ];
-                    })
-                ],
+                
               ),
       drawer: const Drawer(
         elevation: 20,
@@ -62,9 +54,6 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 
-  bool check(){
-    return true;
-  }
 }
 
 class _HomePageState extends State<HomePage> {
@@ -77,21 +66,16 @@ class _HomePageState extends State<HomePage> {
 
   var _error;
 
-  var x = HomePage().check();
 
   @override
   void initState() {
     super.initState();
-    getcurrentUser();
-    getCoinData();
-  }
-
-  void getcurrentUser() async{
-    var prefs = await SharedPreferences.getInstance();
-    var user = prefs.getString('currentUser');
-    setState(() {
-      _user = user!;
+    getcurrentUser().then((value) {
+      setState(() {
+        _user = value!;
+      });
     });
+    getCoinData();
   }
 
   void getCoinData() async{
@@ -123,49 +107,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<bool> hasbeenAdded(String id) async{
-
-    var prefs = await SharedPreferences.getInstance();
-    bool flag = false;
-    if(prefs.getString(_user) != null){
-      var watchlist = jsonDecode(prefs.getString(_user)!);
-      if(watchlist.contains(id)){
-        // print('watchlist $id is ${watchlist.contains(id)}');
-        flag = true;
-      }
-    }
-    return flag;
-    
-  }
-
-  void addToWatchlist(String id) async{
-    var watchlist;
-    var prefs = await SharedPreferences.getInstance();
-    if(prefs.getString(_user) != null){
-      watchlist =jsonDecode(prefs.getString(_user)!);
-      if(!watchlist.contains(id)){
-        watchlist.add(id);
-        prefs.setString(_user, jsonEncode(watchlist));
-      }
-    }
-    else{
-      watchlist = [id];
-      prefs.setString(_user, jsonEncode(watchlist));
-    }
-  }
-
-  void removeFromWatchlist(String id) async{
-    var prefs = await SharedPreferences.getInstance();
-    if(prefs.getString(_user) != null){
-      var watchlist = jsonDecode(prefs.getString(_user)!);
-      watchlist!.removeWhere((e) => e==id);
-      prefs.setString(_user, jsonEncode(watchlist));
-    }
-  }
-
+  
   @override
   Widget build(BuildContext context) {
-    // print(x);
+    print('set user $_user');
     return 
       _isLoading ?
       const Center(
@@ -176,11 +121,8 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           return 
             CoinCard(
-              addToWatchlist: addToWatchlist,
-              removeFromWatchlist: removeFromWatchlist,
               coinData: _coinData,
               index: index,
-              hasbeenAdded: hasbeenAdded,
             );
         },
         itemCount: _coinData.length,
