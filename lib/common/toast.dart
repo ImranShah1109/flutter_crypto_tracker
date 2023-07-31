@@ -7,12 +7,13 @@ class Toast {
   final duration;
 
   Widget ToastBar(){
+    double length = message.length > 20 ? message.length * 10 : message.length * 16;
     return
       SnackBar(
         content: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(message),
+                Flexible(child: Text(message)),
               ],
             ),
         duration: Duration(seconds: duration),
@@ -20,7 +21,7 @@ class Toast {
           borderRadius: BorderRadius.circular(50)
         ),
         elevation: 15,
-        width: 300,
+        width: length,
         behavior: SnackBarBehavior.floating,
     );
   }

@@ -110,7 +110,6 @@ class _HomePageState extends State<HomePage> {
   
   @override
   Widget build(BuildContext context) {
-    print('set user $_user');
     return 
       _isLoading ?
       const Center(
