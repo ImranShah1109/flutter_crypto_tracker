@@ -1,11 +1,10 @@
 // ignore_for_file: avoid_print
 
-import 'dart:async';
 import 'dart:convert';
 import 'package:crypto_tracker/common/coin_card.dart';
+import 'package:crypto_tracker/pages/watchlist.dart';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../functions/getcurrent_user.dart';
@@ -37,10 +36,14 @@ const Home({ Key? key }) : super(key: key);
                 centerTitle: true,
                 
               ),
-      drawer: const Drawer(
+      drawer: Drawer(
         elevation: 20,
-        child: Text('Drawer 1'),
         width: 250,
+        child: ListTile(
+                leading: Icon(Icons.favorite),
+                title:  Text('Watchlist'),
+                onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Watchlist(),))
+              ),
       ),
       body: const HomePage()
     );

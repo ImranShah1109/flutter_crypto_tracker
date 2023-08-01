@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:crypto_tracker/common/toast.dart';
+import 'package:crypto_tracker/functions/get_watchlist.dart';
+import 'package:crypto_tracker/pages/watchlist.dart';
 import 'package:crypto_tracker/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -95,7 +97,7 @@ class _CoinCardState extends State<CoinCard> {
                   Column(
                     children: [
                               InkWell(
-                                onTap: () {
+                                onTap: () async{
                                   final toast;
                                   if(isAdded){
                                     removeFromWatchlist(widget.coinData[widget.index]['id']);
@@ -112,6 +114,7 @@ class _CoinCardState extends State<CoinCard> {
                                             ).ToastBar();
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(toast);
+                                  Watchlist.of(context)?.watchlist = await getWatchlist();
                                 },
                                 child:isAdded ? 
                                   Icon(
