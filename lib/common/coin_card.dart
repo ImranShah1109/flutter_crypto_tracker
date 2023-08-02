@@ -2,6 +2,7 @@
 
 import 'package:crypto_tracker/common/toast.dart';
 import 'package:crypto_tracker/functions/get_watchlist.dart';
+import 'package:crypto_tracker/pages/coin.dart';
 import 'package:crypto_tracker/pages/watchlist.dart';
 import 'package:crypto_tracker/themes.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class CoinCard extends StatefulWidget {
   const CoinCard({ Key? key, this.coinData, this.index,}) : super(key: key);
   final coinData;
   final index;
+
   @override
   _CoinCardState createState() => _CoinCardState();
   
@@ -23,6 +25,7 @@ class CoinCard extends StatefulWidget {
 class _CoinCardState extends State<CoinCard> {
   bool isAdded = false;
   var formatter = NumberFormat('#,###,000');
+
   @override
   Widget build(BuildContext context) {
     hasbeenAdded(widget.coinData[widget.index]['id']).then((value){
@@ -41,7 +44,7 @@ class _CoinCardState extends State<CoinCard> {
     (
       key: UniqueKey(),
       onTap: () {
-        // print(coinData[index]['id']);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  Coin(id: widget.coinData[widget.index]['id']),));
       },
       child: UnconstrainedBox(
         child: Container(

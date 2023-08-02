@@ -39,7 +39,6 @@ dependencies:
   url_strategy:
   hexcolor: ^3.0.1
   shared_preferences: ^2.2.0
-  fluttertoast: ^8.2.2
   http: ^0.13.5
   intl: ^0.18.1
 
