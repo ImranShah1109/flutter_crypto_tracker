@@ -38,7 +38,7 @@ const Home({ Key? key }) : super(key: key);
               ),
       drawer: Drawer(
         elevation: 20,
-        width: 250,
+        width: (MediaQuery.of(context).size.width/3) * 2,
         child: ListTile(
                 leading: Icon(Icons.favorite),
                 title:  Text('Watchlist'),
